@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSE Typing Tutor</title>
+<meta name="theme-color" content="#111827">
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#687386;--primary:#4f46e5;--primary2:#7c3aed;--good:#059669;--bad:#dc2626;--border:#e5e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#111827,#312e81);color:white;padding:28px 18px 34px;border-radius:0 0 28px 28px}
+.wrap{max-width:1000px;margin:auto}.brand{font-size:30px;font-weight:900}.tag{opacity:.85;margin-top:5px}.hero{margin-top:25px}.hero h1{font-size:32px;margin:0 0 8px}.hero p{margin:0;opacity:.85;line-height:1.5}
+nav{display:flex;gap:8px;overflow:auto;padding:14px 0}.navbtn{white-space:nowrap;border:1px solid #ffffff33;background:#ffffff12;color:white;padding:10px 14px;border-radius:12px;cursor:pointer}
+main{padding:18px}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 8px 30px #1118270b}.card h2,.card h3{margin-top:0}.icon{font-size:30px}.muted{color:var(--muted)}
+button.primary,button.action{border:0;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;padding:12px 17px;border-radius:12px;font-weight:800;cursor:pointer}
+button.secondary{border:1px solid var(--border);background:white;padding:11px 15px;border-radius:12px;font-weight:700;cursor:pointer}
+.lesson{margin:10px 0;padding:15px;border:1px solid var(--border);border-radius:14px;cursor:pointer;background:#fff}.lesson:hover{border-color:var(--primary)}
+.practice-text{font-size:20px;line-height:1.8;background:#f8fafc;border:1px solid var(--border);padding:18px;border-radius:14px;margin:15px 0;min-height:130px}
+textarea{width:100%;min-height:150px;border:2px solid var(--border);border-radius:14px;padding:15px;font-size:18px;line-height:1.6;resize:vertical;outline:none}
+textarea:focus{border-color:var(--primary)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}.stat{background:#f8fafc;border-radius:14px;padding:14px;text-align:center}.stat b{display:block;font-size:25px}.stat span{font-size:12px;color:var(--muted)}
+.test-options{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.test-options button.selected{outline:3px solid #c7d2fe}
+.result{background:linear-gradient(135deg,#ecfdf5,#eef2ff);border-radius:18px;padding:20px;margin-top:15px}
+.bad{color:var(--bad)}.good{color:var(--good)}
+kbd{background:#111827;color:#fff;padding:5px 8px;border-radius:6px;font-size:13px}
+footer{text-align:center;color:var(--muted);padding:30px 10px}
+@media(max-width:600px){.brand{font-size:25px}.hero h1{font-size:26px}.stats{grid-template-columns:repeat(2,1fr)}main{padding:12px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="brand">⌨️ SSE Typing Tutor</div>
+<div class="tag">Shailendra Sen Education • Learn • Practice • Test</div>
+<div class="hero">
+<h1>Typing ko zero se strong banao.</h1>
+<p>Beginner learning, daily practice aur BSF HCM-style typing tests — ek hi jagah.</p>
+</div>
+<nav>
+<button class="navbtn" onclick="show('home')">🏠 Home</button>
+<button class="navbtn" onclick="show('learning')">🎓 Learning</button>
+<button class="navbtn" onclick="show('practice')">⌨️ Practice</button>
+<button class="navbtn" onclick="show('test')">🏆 BSF HCM Test</button>
+<button class="navbtn" onclick="show('progress')">📊 Progress</button>
+</nav>
+</div>
+</header>
+
+<main class="wrap">
+<section id="home" class="panel active">
+<div class="grid">
+<div class="card"><div class="icon">🎓</div><h2>Typing Learning</h2><p class="muted">Bilkul beginner ke liye keyboard aur finger placement se start karo.</p><button class="primary" onclick="show('learning')">Start Learning</button></div>
+<div class="card"><div class="icon">⌨️</div><h2>Typing Practice</h2><p class="muted">Words, sentences aur paragraph par speed + accuracy improve karo.</p><button class="primary" onclick="show('practice')">Practice Now</button></div>
+<div class="card"><div class="icon">🏆</div><h2>BSF HCM Test</h2><p class="muted">Exam-style timed typing test aur instant result.</p><button class="primary" onclick="show('test')">Start Test</button></div>
+</div>
+<div class="card" style="margin-top:15px"><h2>V1 Features</h2><p>✅ Live WPM &nbsp; ✅ Accuracy &nbsp; ✅ Errors &nbsp; ✅ Timed Test &nbsp; ✅ Local Progress Save</p><p class="muted">Note: test passages in this first version are original practice passages, not copied from third-party PDFs.</p></div>
+</section>
+
+<section id="learning" class="panel">
+<div class="card"><h2>🎓 Typing Learning</h2><p class="muted">Lesson select karo aur neeche diye practice rule ko follow karo.</p>
+<div class="lesson" onclick="lesson('Keyboard Basics','Keyboard ko pehle observe karo. Left hand generally A-S-D-F aur right hand J-K-L-; area se start karega.')"><b>1. Keyboard Basics</b><br><span class="muted">Keys aur keyboard layout samjho.</span></div>
+<div class="lesson" onclick="lesson('Finger Placement','Left: A-S-D-F. Right: J-K-L-;. Dono thumbs spacebar par. F aur J keys ke bumps se position identify karo.')"><b>2. Finger Placement</b><br><span class="muted">Fingers ko correct position par rakho.</span></div>
+<div class="lesson" onclick="lesson('Home Row','Practice: asdf jkl; asdf jkl; fdsa ;lkj. Pehle accuracy, phir speed.')"><b>3. Home Row ASDF JKL;</b><br><span class="muted">Foundation strong karo.</span></div>
+<div class="lesson" onclick="lesson('Upper Row','Upper row ko slowly practice karo: qwer uiop. Phir home row ke saath combine karo.')"><b>4. Upper Row</b><br><span class="muted">QWERTY upper row.</span></div>
+<div class="lesson" onclick="lesson('Lower Row','Lower row practice: zxcv nm,. Pehle individual keys, phir combinations.')"><b>5. Lower Row</b><br><span class="muted">Bottom row control.</span></div>
+<div class="lesson" onclick="lesson('Words & Sentences','Common words ko bina keyboard dekhe type karne ki aadat banao. Accuracy 90%+ target rakho.')"><b>6. Words & Sentences</b><br><span class="muted">Real typing flow.</span></div>
+<div class="lesson" onclick="lesson('Paragraph','Paragraph ko continuously type karo. Har mistake par rukne ke bajay rhythm maintain karo.')"><b>7. Paragraph</b><br><span class="muted">Long-form practice.</span></div>
+<div id="lessonBox" class="result" style="display:none"></div>
+</div>
+</section>
+
+<section id="practice" class="panel">
+<div class="card"><h2>⌨️ Typing Practice</h2><p class="muted">Neeche text ko exactly type karo. Timer first key press par start hoga.</p>
+<div id="practiceText" class="practice-text"></div>
+<div class="stats"><div class="stat"><b id="pwpm">0</b><span>WPM</span></div><div class="stat"><b id="pacc">100%</b><span>Accuracy</span></div><div class="stat"><b id="perr">0</b><span>Errors</span></div><div class="stat"><b id="ptime">0s</b><span>Time</span></div></div>
+<textarea id="practiceInput" placeholder="Yahan typing start karo..." oninput="practiceLive()"></textarea>
+<br><br><button class="secondary" onclick="resetPractice()">↻ New Practice</button>
+</div>
+</section>
+
+<section id="test" class="panel">
+<div class="card"><h2>🏆 BSF HCM Typing Test</h2><p class="muted">Exam-style practice. Choose duration and start.</p>
+<div class="test-options">
+<button class="secondary selected" id="t5" onclick="setDuration(5)">5 Minutes</button>
+<button class="secondary" id="t10" onclick="setDuration(10)">10 Minutes</button>
+</div>
+<div id="testState">
+<div class="practice-text" id="testText"></div>
+<div class="stats"><div class="stat"><b id="twpm">0</b><span>WPM</span></div><div class="stat"><b id="tacc">100%</b><span>Accuracy</span></div><div class="stat"><b id="terr">0</b><span>Errors</span></div><div class="stat"><b id="tleft">5:00</b><span>Time Left</span></div></div>
+<textarea id="testInput" placeholder="Test start karne ke liye yahan click karke typing shuru karo..." oninput="testLive()"></textarea>
+<br><br><button class="secondary" onclick="resetTest()">↻ Reset Test</button>
+</div>
+<div id="testResult" class="result" style="display:none"></div>
+</div>
+</section>
+
+<section id="progress" class="panel">
+<div class="card"><h2>📊 My Progress</h2><p class="muted">Ye progress isi browser/device me save hoti hai.</p>
+<div class="stats"><div class="stat"><b id="bestWpm">0</b><span>Best WPM</span></div><div class="stat"><b id="bestAcc">0%</b><span>Best Accuracy</span></div><div class="stat"><b id="testsDone">0</b><span>Tests Done</span></div><div class="stat"><b id="practiceDone">0</b><span>Practice Sessions</span></div></div>
+<button class="secondary" onclick="clearProgress()">Clear Progress</button>
+</div>
+</section>
+</main>
+<footer>© SSE Typing Tutor • Shailendra Sen Education</footer>
+
+<script>
+const practicePassages=[
+"Typing is a skill that improves through regular practice. Keep your fingers on the correct keys, look at the screen instead of the keyboard, and focus on accuracy before speed. A steady rhythm is more useful than rushing through every sentence.",
+"Good typing saves time and helps students work with confidence. Start with simple words, then move to sentences and paragraphs. When you make a mistake, stay calm and continue. With daily practice, your speed and accuracy can improve together.",
+"Computer skills are important for modern students and office work. Fast and accurate typing makes it easier to write applications, prepare documents, search for information, and complete online tasks. Practice a little every day and measure your progress honestly."
+];
+const testPassages=[
+"Regular practice is the foundation of good typing. A student should first learn the keyboard layout and correct finger placement. The aim is not to press the keys as quickly as possible, but to develop a smooth and accurate rhythm. Keep both hands relaxed, use the correct finger for each key, and avoid looking down at the keyboard. As confidence grows, begin practising words, sentences, and longer paragraphs. During a timed test, read a few words ahead and keep moving even when a small mistake occurs. Accuracy remains important because careless errors reduce the effective typing performance. Daily practice with a fixed routine can gradually improve speed, control, and confidence.",
+"Technology has changed the way people study and work. Students now prepare assignments, complete online forms, send messages, and take computer based examinations. For these activities, comfortable keyboard use is a valuable skill. A learner should begin slowly and make sure every key is pressed with the correct finger. After the basic movements become familiar, longer exercises can be introduced. The best results come from consistent practice rather than occasional long sessions. Keep the body relaxed, sit comfortably, and maintain a steady pace. If an error occurs, continue with the passage and avoid losing concentration. Over time, accurate movements become automatic and typing becomes faster and easier."
+];
+
+let practiceStart=0,practiceTimer=null,testStart=0,testTimer=null,duration=5;
+function show(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='progress')updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
+function lesson(title,text){let b=document.getElementById('lessonBox');b.style.display='block';b.innerHTML='<h3>'+title+'</h3><p>'+text+'</p><p><b>Tip:</b> Roz 10–15 minutes practice karo aur accuracy ko priority do.</p>'}
+function calc(text,typed,seconds){let n=Math.min(text.length,typed.length),errors=0;for(let i=0;i<n;i++)if(text[i]!==typed[i])errors++;errors+=Math.max(0,typed.length-text.length);let words=typed.trim()?typed.trim().split(/\s+/).length:0;let minutes=Math.max(seconds,1)/60;let wpm=Math.round(words/minutes);let acc=typed.length?Math.max(0,Math.round(((typed.length-errors)/typed.length)*100)):100;return{wpm,acc,errors}}
+function resetPractice(){clearInterval(practiceTimer);practiceStart=0;document.getElementById('practiceText').textContent=practicePassages[Math.floor(Math.random()*practicePassages.length)];document.getElementById('practiceInput').value='';['pwpm','perr'].forEach(id=>document.getElementById(id).textContent='0');document.getElementById('pacc').textContent='100%';document.getElementById('ptime').textContent='0s'}
+function practiceLive(){let inp=document.getElementById('practiceInput'),text=document.getElementById('practiceText').textContent;if(!inp.value)return;if(!practiceStart){practiceStart=Date.now();practiceTimer=setInterval(()=>{let s=Math.floor((Date.now()-practiceStart)/1000);document.getElementById('ptime').textContent=s+'s';},1000)}let s=(Date.now()-practiceStart)/1000,r=calc(text,inp.value,s);document.getElementById('pwpm').textContent=r.wpm;document.getElementById('pacc').textContent=r.acc+'%';document.getElementById('perr').textContent=r.errors;if(inp.value.length>=text.length){clearInterval(practiceTimer);savePractice()}}
+function savePractice(){let p=JSON.parse(localStorage.getItem('sseProgress')||'{}');p.practice=(p.practice||0)+1;localStorage.setItem('sseProgress',JSON.stringify(p));}
+function setDuration(m){duration=m;document.getElementById('t5').classList.toggle('selected',m===5);document.getElementById('t10').classList.toggle('selected',m===10);resetTest()}
+function resetTest(){clearInterval(testTimer);testStart=0;document.getElementById('testText').textContent=testPassages[Math.floor(Math.random()*testPassages.length)];document.getElementById('testInput').value='';document.getElementById('testResult').style.display='none';document.getElementById('twpm').textContent='0';document.getElementById('tacc').textContent='100%';document.getElementById('terr').textContent='0';document.getElementById('tleft').textContent=duration+':00'}
+function testLive(){let inp=document.getElementById('testInput'),text=document.getElementById('testText').textContent;if(!inp.value)return;if(!testStart){testStart=Date.now();testTimer=setInterval(testTick,500)}let s=(Date.now()-testStart)/1000,r=calc(text,inp.value,s);document.getElementById('twpm').textContent=r.wpm;document.getElementById('tacc').textContent=r.acc+'%';document.getElementById('terr').textContent=r.errors}
+function testTick(){let left=Math.max(0,duration*60-Math.floor((Date.now()-testStart)/1000));let m=Math.floor(left/60),s=left%60;document.getElementById('tleft').textContent=m+':'+String(s).padStart(2,'0');if(left<=0)finishTest()}
+function finishTest(){if(!testStart)return;clearInterval(testTimer);let text=document.getElementById('testText').textContent,typed=document.getElementById('testInput').value,s=Math.max(1,(Date.now()-testStart)/1000),r=calc(text,typed,s);let p=JSON.parse(localStorage.getItem('sseProgress')||'{}');p.tests=(p.tests||0)+1;p.bestWpm=Math.max(p.bestWpm||0,r.wpm);p.bestAcc=Math.max(p.bestAcc||0,r.acc);localStorage.setItem('sseProgress',JSON.stringify(p));document.getElementById('testResult').style.display='block';document.getElementById('testResult').innerHTML='<h2>🎉 Test Complete</h2><p><b>'+r.wpm+' WPM</b> • <b>'+r.acc+'% Accuracy</b> • <b>'+r.errors+' Errors</b></p><p>'+ (r.acc>=90?'Excellent accuracy!':'Accuracy improve karne par focus karo.')+'</p>';testStart=0}
+function updateProgress(){let p=JSON.parse(localStorage.getItem('sseProgress')||'{}');document.getElementById('bestWpm').textContent=p.bestWpm||0;document.getElementById('bestAcc').textContent=(p.bestAcc||0)+'%';document.getElementById('testsDone').textContent=p.tests||0;document.getElementById('practiceDone').textContent=p.practice||0}
+function clearProgress(){if(confirm('Progress clear karni hai?')){localStorage.removeItem('sseProgress');updateProgress()}}
+resetPractice();resetTest();updateProgress();
+</script>
+</body>
+</html>
